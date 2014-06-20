@@ -1,8 +1,17 @@
-#!/usr/bin/env node
+#!/usr/bin/env scala
 
-var fs = require('fs'),
-    parser = require('../lib/parser').parser,
-    file = process.argv[2],
-    input = fs.readFileSync(file, "utf8");
+import java.lang.StringBuffer
 
-console.log(parser.parse(input).toCSS())
+var file = args[2]
+var input = java.lang.StringBuffer(file)
+
+println(parser.parse(input).toCSS())
+
+// Still in JS
+
+// var fs = require('fs'),
+//    parser = require('../lib/parser').parser,
+//    file = process.argv[2],
+//    input = fs.readFileSync(file, "utf8");
+
+// console.log(parser.parse(input).toCSS())

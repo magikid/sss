@@ -1,3 +1,4 @@
 docs
 node_modules
 lib/parser.js
+lib/scala-bison

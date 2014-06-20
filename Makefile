@@ -1,9 +1,9 @@
-BIN = "`npm bin`"
+BIN = "`scala`"
 
 lib/parser.js: lib/grammar.jison lib/tokens.jisonlex
-	${BIN}/jison $^ -o $@
+	${BIN}-bison $^ -o $@
 
-test: lib/parser.js
+test: lib/parser.scala
 	${BIN}/mocha --reporter spec
 
 watch:

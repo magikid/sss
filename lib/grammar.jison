@@ -9,9 +9,31 @@
 // Based on http://www.w3.org/TR/CSS21/syndata.html#syntax
 
 %{
+  // require nodes produced by parser
   var nodes = require('./nodes')
 %}
 
 %%
 
 // Parsing starts here.
+stylesheet:
+  rules EOF                   { return new nodes.StyleSheet($1) }
+;
+
+rules:
+  rules                       { $$ = [ $1 ] }
+| rules rule                  { $$ = $1.concat($2)}
+;
+
+rule:
+  selector '{' properties '}' { $$ = new nodes.Rules($1, $3)}
+;
+
+selector:
+  IDENTIFIER
+| SELECTOR
+;
+
+properties:
+  /* empty */                 { $$ = [] }
+;

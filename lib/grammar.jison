@@ -21,7 +21,7 @@ stylesheet:
 ;
 
 rules:
-  rules                       { $$ = [ $1 ] }
+  rule                        { $$ = [ $1 ] }
 | rules rule                  { $$ = $1.concat($2)}
 ;
 
@@ -36,4 +36,23 @@ selector:
 
 properties:
   /* empty */                 { $$ = [] }
+  property                    { $$ = [ $1 ] }
+| properties ';' property     { $$ = $1.concat($3)}
+| properties ';'		      { $$ = $1 }
+;
+
+property:
+  IDENTIFIER ':' values       { $$ = new nodes.Property($1, $3)}
+;
+
+values:
+  value                       { $$ = [ $1 ] }
+| values value                { $$ = $1.concat($2)}
+;
+
+value:
+  IDENTIFIER
+| COLOR
+| NUMBER
+| DIMENSION
 ;

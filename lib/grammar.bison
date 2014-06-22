@@ -2,9 +2,6 @@
   import nodes._
 %}
 
-/* lexical grammar */
-%lex
-
 %%
 
 //// Rules
@@ -30,11 +27,8 @@
 
 <<EOF>>               return 'EOF'; 
 
-/lex
 
-%start expressions
-
-%% /* language grammar */
+%%
 
   stylesheet:
     rules EOF                   { return new nodes.StyleSheet($1) }

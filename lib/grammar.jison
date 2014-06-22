@@ -9,8 +9,7 @@
 // Based on http://www.w3.org/TR/CSS21/syndata.html#syntax
 
 %{
-  // require nodes produced by parser
-  var nodes = require('./nodes')
+  import nodes._
 %}
 
 %%

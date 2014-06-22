@@ -12,10 +12,10 @@
   import nodes._
 %}
 
-DIGIT                 [0-9]
-NUMBER                {DIGIT}+(\.{DIGIT}+)? // matches: 10 and 3.14
-NAME                  [a-zA-Z][\w\-]*       // matches: body, background-color and myClassName
-SELECTOR              (\.|\#|\:\:|\:){NAME} // matches: #id, .class, :hover and ::before
+%token DIGIT
+%token NUMBER
+%token NAME
+%token SELECTOR
 
 %%
 

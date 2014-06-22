@@ -1,83 +1,78 @@
-// Jison parser grammar
-//
-// This file, along with tokens.jisonlex, is compiled to parser.js.
-//
-// Jison doc: http://zaach.github.io/jison/docs/#specifying-a-language
-// Jison is a port of Bison (in C). The format grammar is the same.
-// Bison doc: http://dinosaur.compilertools.net/bison/bison_6.html#SEC34
-//
-// Based on http://www.w3.org/TR/CSS21/syndata.html#syntax
-
 %{
   import nodes._
 %}
 
-%token DIGIT
-%token NUMBER
-%token NAME
-%token SELECTOR
+/* lexical grammar */
+%lex
 
 %%
 
 //// Rules
-\s+           // ignore spaces, line breaks
+\s+                   // ignore spaces, line breaks
+
+[0-9]                 return 'DIGIT';
+{DIGIT}+(\.{DIGIT}+)? return 'NUMBER';    //matches: 10 and 3.14
+[a-zA-Z][\w\-]*       return 'NAME';      //matches: body, back-color and myClassName
+(\.|\#|\:\:|\:){NAME} return 'SELECTOR';  // matches: #id, .class, :hover and ::before
 
 // Numbers
-{NUMBER}{px|em|\%}    return 'DIMENSION' // 10 px, 1em, 50%
-{NUMBER}        return 'NUMBER' // 0
-\#[0-9A-Fa-f]{3-6}    return 'COLOR' // #fff, #f0f0f0
+{NUMBER}{px|em|\%}    return 'DIMENSION'; // 10 px, 1em, 50%
+{NUMBER}              return 'NUMBER';    // 0
+\#[0-9A-Fa-f]{3-6}    return 'COLOR';     // #fff, #f0f0f0
 
 // Selectors
-{SELECTION}       return 'SELECTOR' // .class, #id
-{NAME}{SELECTOR}    return 'SELECTOR' // div.class, body#id
+{SELECTION}           return 'SELECTOR';  // .class, #id
+{NAME}{SELECTOR}      return 'SELECTOR';  // div.class, body#id
 
-{NAME}          return 'IDENTIFIER' // body, font-size
+{NAME}                return 'IDENTIFIER';// body, font-size
 
-.           return yytext // {, }, +, :, ;
+.                     return yytext;      // {, }, +, :, ;
 
-<<EOF>>               return 'EOF'
+<<EOF>>               return 'EOF'; 
 
+/lex
 
-%%
+%start expressions
 
-// Parsing starts here.
-stylesheet:
-  rules EOF                   { return new nodes.StyleSheet($1) }
-;
+%% /* language grammar */
 
-rules:
-  rule                        { $$ = [ $1 ] }
-| rules rule                  { $$ = $1.concat($2)}
-;
+  stylesheet:
+    rules EOF                   { return new nodes.StyleSheet($1) }
+  ;
 
-rule:
-  selector '{' properties '}' { $$ = new nodes.Rules($1, $3)}
-;
+  rules:
+    rule                        { $$ = [ $1 ] }
+  | rules rule                  { $$ = $1.concat($2)}
+  ;
 
-selector:
-  IDENTIFIER
-| SELECTOR
-;
+  rule:
+    selector '{' properties '}' { $$ = new nodes.Rules($1, $3)}
+  ;
 
-properties:
-  /* empty */                 { $$ = [] }
-  property                    { $$ = [ $1 ] }
-| properties ';' property     { $$ = $1.concat($3)}
-| properties ';'		      { $$ = $1 }
-;
+  selector:
+    IDENTIFIER
+  | SELECTOR
+  ;
 
-property:
-  IDENTIFIER ':' values       { $$ = new nodes.Property($1, $3)}
-;
+  properties:
+    /* empty */                 { $$ = [] }
+    property                    { $$ = [ $1 ] }
+  | properties ';' property     { $$ = $1.concat($3)}
+  | properties ';'		      { $$ = $1 }
+  ;
 
-values:
-  value                       { $$ = [ $1 ] }
-| values value                { $$ = $1.concat($2)}
-;
+  property:
+    IDENTIFIER ':' values       { $$ = new nodes.Property($1, $3)}
+  ;
 
-value:
-  IDENTIFIER
-| COLOR
-| NUMBER
-| DIMENSION
+  values:
+    value                       { $$ = [ $1 ] }
+  | values value                { $$ = $1.concat($2)}
+  ;
+
+  value:
+    IDENTIFIER
+  | COLOR
+  | NUMBER
+  | DIMENSION
 ;

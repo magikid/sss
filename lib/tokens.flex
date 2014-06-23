@@ -6,8 +6,8 @@
 
 DIGIT                 [0-9]
 NUMBERS               {DIGIT}+(\.{DIGIT}+)?
-[a-zA-Z][\w\-]*       NAME
-(\.|\#|\:\:|\:){NAME} SELECTOR
+NAME                  [a-zA-Z][\w\-]*
+SELECTOR              (\.|\#|\:\:|\:){NAME}
 
 %%
 

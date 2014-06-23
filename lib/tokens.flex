@@ -16,7 +16,7 @@ HEX                   \#[0-9A-Fa-f]
 
 NUMBER[px|em|\%]      { return 'DIMENSION'; }
 NUMBER                { return 'NUMBER'; }
-\#[0-9A-Fa-f]{3,6}            { return 'COLOR'; }
+\#[0-9A-Fa-f]{3,6}    { return 'COLOR'; }
 
 {SELECTOR}            { return 'SELECTOR'; }
 {NAME}{SELECTOR}      { return 'SELECTOR'; }

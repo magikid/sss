@@ -2,6 +2,18 @@
   import nodes._
 %}
 
+%union {
+  int ival;
+  float fval;
+  char *sval;
+}
+
+%token <sval> IDENTIFIER
+%token <sval> SELECTOR
+%token <sval> COLOR
+%token <sval> NUMBER
+%token <sval> DIMENSION
+
 %%
 
   stylesheet:

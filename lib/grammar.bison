@@ -26,7 +26,7 @@
     /* empty */                 { $$ = [] }
     property                    { $$ = [ $1 ] }
   | properties ';' property     { $$ = $1.concat($3)}
-  | properties ';'		      { $$ = $1 }
+  | properties ';'              { $$ = $1 }
   ;
 
   property:

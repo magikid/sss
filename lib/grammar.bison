@@ -15,7 +15,7 @@
 %token <sval> DIMENSION
 %token        EOF
 
-%type  <sval> value values property properties selector rules rule stylesheet
+%type  <sval> value values properties property selector rules rule stylesheet
 
 %%
 
@@ -39,7 +39,7 @@
 
   properties:
     /* empty */                 { $$ = []; }
-    property                    { $$ = [ $1 ]; }
+  | property                    { $$ = [ $1 ]; }
   | properties ';' property     { $$ = $1.concat($3);}
   | properties ';'              { $$ = $1; }
   ;

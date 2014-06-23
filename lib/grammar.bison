@@ -5,7 +5,7 @@
 %union {
   int ival;
   float fval;
-  char *sval;
+  char* sval;
 }
 
 %token <sval> IDENTIFIER

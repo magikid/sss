@@ -1,32 +1,27 @@
-// Jison lexer grammar
-//
-// http://zaach.github.io/jison/docs/#lexical-analysis
-// http://dinosaur.compilertools.net/flex/flex_6.html#SEC6
-//
-// Order is important. Rules are matches from top to bottom.
+%{
+	using namespace std;	
+	#define YY_DECL extern "C" int yylex()
+}
 
-//// Macros
-DIGIT                 [0-9]
-NUMBER                {DIGIT}+(\.{DIGIT}+)? // matches: 10 and 3.14
-NAME                  [a-zA-Z][\w\-]*       // matches: body, background-color and myClassName
-SELECTOR              (\.|\#|\:\:|\:){NAME} // matches: #id, .class, :hover and ::before
+
+DIGIT				  [0-9]
+NUMBERS 			  {DIGIT}+(\.{DIGIT}+)?
+[a-zA-Z][\w\-]*       NAME
+(\.|\#|\:\:|\:){NAME} SELECTOR
 
 %%
 
-//// Rules
-\s+					  // ignore spaces, line breaks
+[ \s+ ]
 
-// Numbers
-{NUMBER}{px|em|\%}	  return 'DIMENSION' // 10 px, 1em, 50%
-{NUMBER}			  return 'NUMBER' // 0
-\#[0-9A-Fa-f]{3-6}	  return 'COLOR' // #fff, #f0f0f0
+NUMBER[px|em|\%]  	  { return 'DIMENSION'; }
+{NUMBER}			  { return 'NUMBER'; }
+\#[0-9A-Fa-f]{3-6}	  { return 'COLOR'; }
 
-// Selectors
-{SELECTION}			  return 'SELECTOR' // .class, #id
-{NAME}{SELECTOR}	  return 'SELECTOR' // div.class, body#id
+{SELECTOR}			  { return 'SELECTOR'; }
+{NAME}{SELECTOR}	  { return 'SELECTOR'; }
 
-{NAME}				  return 'IDENTIFIER' // body, font-size
+{NAME}				  { return 'IDENTIFIER'; }
 
-.					  return yytext // {, }, +, :, ;
+.					  { return yytext; }
 
-<<EOF>>               return 'EOF'
+<<EOF>>               { return 'EOF'; }

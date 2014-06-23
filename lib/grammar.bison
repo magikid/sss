@@ -2,20 +2,12 @@
   import nodes._
 %}
 
-%union {
-  int ival;
-  float fval;
-  char* sval;
-}
-
-%token <sval> IDENTIFIER
-%token <sval> SELECTOR
-%token <sval> COLOR
-%token <sval> NUMBER
-%token <sval> DIMENSION
-%token        EOF
-
-%type  <sval> value values properties property selector rules rule stylesheet
+%token IDENTIFIER
+%token SELECTOR
+%token COLOR
+%token NUMBER
+%token DIMENSION
+%token EOF
 
 %%
 

@@ -15,6 +15,8 @@
 %token <sval> DIMENSION
 %token        EOF
 
+%type  <sval> value values property properties selector rules rule stylesheet IDENTIFIER SELECTOR COLOR NUMBER DIMENSION
+
 %%
 
   stylesheet:
